@@ -1,10 +1,3 @@
-# Allow all search engine crawlers to crawl the site
 User-agent: *
 Allow: /
-
-# Disallow crawling of error pages
-Disallow: /404
-Disallow: /500
-
-# Reference the sitemap location
-Sitemap: https://taxdebtwealthsuite.com/sitemap.xml
+Sitemap: https://taxdebtwealthsuite.com/sitemap-index.xml

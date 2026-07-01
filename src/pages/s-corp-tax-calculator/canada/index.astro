@@ -1,0 +1,152 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import SCorpTaxCalculator from "../../../components/SCorpTaxCalculator.astro";
+---
+
+<Layout 
+  title="CCPC vs Sole Proprietor Tax Calculator (Free) | TaxDebtWealthSuite"
+  description="Compare your Canadian tax bill as a sole proprietor vs CCPC. Free salary-vs-dividend distribution optimizer for side hustles and freelancers in Canada."
+  ogImage="https://taxdebtwealthsuite.com/images/og-s-corp-tax.png"
+>
+  <link rel="alternate" hreflang="x-default" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/" slot="head" />
+  <link rel="alternate" hreflang="en-us" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/" slot="head" />
+  <link rel="alternate" hreflang="en-gb" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/uk/" slot="head" />
+  <link rel="alternate" hreflang="en-ca" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/canada/" slot="head" />
+  <link rel="alternate" hreflang="en-au" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/australia/" slot="head" />
+
+  <script type="application/ld+json" slot="head">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "CCPC vs Sole Proprietor Tax Calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Compare your Canadian tax bill as a sole proprietor vs CCPC. Free salary-vs-dividend distribution optimizer for side hustles and freelancers in Canada."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [{
+          "@type": "Question",
+          "name": "When should I switch from a sole proprietor to an LLC or S-Corp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In the US, the general threshold is when net profit consistently exceeds $40,000–$50,000/yr — at that level, corporate tax savings exceed compliance costs (~$1,500–$3,000). In the UK, incorporating as a Limited Company makes sense above approximately £30,000–£35,000. Canadian CCPCs become advantageous at $50,000+ due to the Small Business Deduction (9% blended rate). Australian Pty Ltd structures are cost-effective above $80,000 where the 25% company tax rate beats top personal marginal rates of 45% + 2% Medicare."
+          }
+        }]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://taxdebtwealthsuite.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "S-Corp Tax Calculator",
+            "item": "https://taxdebtwealthsuite.com/s-corp-tax-calculator/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Canada",
+            "item": "https://taxdebtwealthsuite.com/s-corp-tax-calculator/canada/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+    
+    <!-- Title Section -->
+    <div class="mb-8 text-center sm:text-left">
+      <h1 class="text-3xl font-extrabold text-white tracking-tight font-sans">
+        CCPC Director Salary vs Dividends Tax Calculator
+      </h1>
+      <p class="text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
+        Compare Canadian Sole Proprietor taxes against Canadian-Controlled Private Corporation (CCPC) structures. Model Small Business Deductions and CPP adjustments.
+      </p>
+      <div class="mt-4 text-xs text-slate-400">
+        Switch to another country variant: 
+        <a href="/s-corp-tax-calculator/" class="text-[#00F5D4] hover:underline">United States (Default)</a> | 
+        <a href="/s-corp-tax-calculator/uk/" class="text-[#00F5D4] hover:underline">United Kingdom (Ltd Company)</a> | 
+        <span class="text-slate-300 font-semibold">Canada</span> | 
+        <a href="/s-corp-tax-calculator/australia/" class="text-[#00F5D4] hover:underline">Australia (Pty Ltd)</a>
+      </div>
+    </div>
+
+    <!-- Calculator Component -->
+    <SCorpTaxCalculator defaultCountry="CA" />
+
+    <!-- Explainer Content -->
+    <div class="border-t border-slate-800/60 mt-12 bg-gradient-to-b from-slate-950 to-slate-950/95">
+      <div class="max-w-4xl mx-auto py-16">
+        <section aria-labelledby="corp-guide-heading">
+          <div class="mb-6">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">Business Tax Strategy (Canada)</span>
+            <h2 id="corp-guide-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+              Choosing Between Sole Proprietor and CCPC Incorporation in Canada
+            </h2>
+            <p class="mt-3 text-slate-400 text-sm leading-relaxed">
+              Canadian freelancers, consultants, and business owners face a critical decision when scaling: whether to remain a Sole Proprietor or incorporate as a Canadian-Controlled Private Corporation (CCPC). As a Sole Proprietor, all net business income is added to your personal income, taxed at your marginal rate (provincial plus federal), and subject to both employee and employer portions of Canada Pension Plan (CPP) contributions, totaling 9.9% up to the pensionable earnings cap.
+            </p>
+          </div>
+
+          <div class="space-y-6 text-sm text-slate-400 leading-relaxed">
+            <article>
+              <h3 class="text-base font-bold text-slate-100 mb-2">The Canadian Small Business Deduction (SBD) Edge</h3>
+              <p>
+                Incorporating as a CCPC provides significant tax advantages, primarily through the federal Small Business Deduction (SBD). This SBD reduces the federal tax rate on active business income to just 9% (on the first $500,000 of profit), which combined with provincial small business rates leads to a total corporate tax rate of 11% to 12.2% depending on the province. This is far lower than personal tax brackets.
+              </p>
+              <p class="mt-3">
+                If the business owner does not need all the profit for personal living expenses, they can leave the funds inside the corporation, letting them compound at the lower corporate tax rate. For personal income, directors can pay themselves a mix of salary (which requires paying CPP but generates RRSP room) and non-eligible dividends (which are taxed at lower rates and do not require CPP contributions). Use our Canadian tax calculator to model your revenue, business expenses, and employment income to find the optimal structure and salary-to-dividend mix for your situation.
+              </p>
+            </article>
+
+            <article>
+              <h3 class="text-base font-bold text-slate-100 mb-2">Corporate Overhead Break-Even Milestones</h3>
+              <p>
+                Because corporate administration (annual corporate tax filings, bookkeeping, corporate minutes) requires significant overhead, we model an average annual maintenance cost of $2,000 CAD. For most Canadian side-hustlers, the break-even net profit threshold sits at $50,000 CAD. Entering your details in the calculator above maps this boundary instantly. If you are using business profit to clear personal liabilities, map your repayment timeline using our <a href="/debt-payoff-calculator/canada/" class="text-[#00F5D4] hover:underline font-semibold">debt snowball vs avalanche planner</a>. Alternatively, if you plan to accumulate wealth inside your business and borrow against company assets later, read about the <a href="/buy-borrow-die-calculator/canada/" class="text-[#00F5D4] hover:underline font-semibold">Canadian portfolio margin loan strategy</a>.
+              </p>
+            </article>
+          </div>
+
+          <!-- FAQ Accordion -->
+          <div class="mt-12 border-t border-slate-800/80 pt-10">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-4">FAQ</span>
+            <h3 class="text-xl font-bold text-white mb-6">Frequently Asked Questions</h3>
+            <div class="faq-item border border-[#1E294B] rounded-lg overflow-hidden bg-[#141C32]">
+              <button
+                class="faq-trigger w-full flex items-center justify-between px-6 py-5 text-left group cursor-pointer"
+                aria-expanded="false"
+                onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true' ? 'false' : 'true'); this.nextElementSibling.classList.toggle('hidden');"
+              >
+                <span class="text-sm font-semibold text-white pr-4">When should I switch from a sole proprietor to an LLC or S-Corp?</span>
+                <svg class="h-5 w-5 text-slate-500 flex-shrink-0 transition-transform duration-200 group-[&[aria-expanded=true]]:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="hidden px-6 pb-6">
+                <p class="text-sm text-slate-400 leading-relaxed">
+                  In the <strong class="text-slate-300">US</strong>, the general threshold is when net profit consistently exceeds <strong class="text-slate-300">$40,000–$50,000/yr</strong> — at that level, corporate tax savings exceed compliance costs (~$1,500–$3,000). In the <strong class="text-slate-300">UK</strong>, incorporating as a Limited Company makes sense above approximately <strong class="text-slate-300">£30,000–£35,000</strong>. <strong class="text-slate-300">Canadian</strong> CCPCs become advantageous at <strong class="text-slate-300">$50,000+</strong> due to the Small Business Deduction (9% blended rate). <strong class="text-slate-300">Australian</strong> Pty Ltd structures are cost-effective above <strong class="text-slate-300">$80,000</strong> where the 25% company tax rate beats top personal marginal rates of 45% + 2% Medicare.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>

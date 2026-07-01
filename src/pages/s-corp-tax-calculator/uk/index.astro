@@ -1,0 +1,152 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import SCorpTaxCalculator from "../../../components/SCorpTaxCalculator.astro";
+---
+
+<Layout 
+  title="Ltd Company vs Sole Trader Tax Calculator (Free) | TaxDebtWealthSuite"
+  description="Compare your UK tax bill as a sole trader vs Private Ltd Company. Free salary-vs-dividend distribution optimizer for side hustles and freelancers in the UK."
+  ogImage="https://taxdebtwealthsuite.com/images/og-s-corp-tax.png"
+>
+  <link rel="alternate" hreflang="x-default" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/" slot="head" />
+  <link rel="alternate" hreflang="en-us" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/" slot="head" />
+  <link rel="alternate" hreflang="en-gb" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/uk/" slot="head" />
+  <link rel="alternate" hreflang="en-ca" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/canada/" slot="head" />
+  <link rel="alternate" hreflang="en-au" href="https://taxdebtwealthsuite.com/s-corp-tax-calculator/australia/" slot="head" />
+
+  <script type="application/ld+json" slot="head">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Ltd Company vs Sole Trader Tax Calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Compare your UK tax bill as a sole trader vs Private Ltd Company. Free salary-vs-dividend distribution optimizer for side hustles and freelancers in the UK."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [{
+          "@type": "Question",
+          "name": "When should I switch from a sole proprietor to an LLC or S-Corp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In the US, the general threshold is when net profit consistently exceeds $40,000–$50,000/yr — at that level, corporate tax savings exceed compliance costs (~$1,500–$3,000). In the UK, incorporating as a Limited Company makes sense above approximately £30,000–£35,000. Canadian CCPCs become advantageous at $50,000+ due to the Small Business Deduction (9% blended rate). Australian Pty Ltd structures are cost-effective above $80,000 where the 25% company tax rate beats top personal marginal rates of 45% + 2% Medicare."
+          }
+        }]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://taxdebtwealthsuite.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "S-Corp Tax Calculator",
+            "item": "https://taxdebtwealthsuite.com/s-corp-tax-calculator/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "United Kingdom",
+            "item": "https://taxdebtwealthsuite.com/s-corp-tax-calculator/uk/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+    
+    <!-- Title Section -->
+    <div class="mb-8 text-center sm:text-left">
+      <h1 class="text-3xl font-extrabold text-white tracking-tight font-sans">
+        Ltd Company Director Salary vs Dividends Tax Calculator
+      </h1>
+      <p class="text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
+        Compare UK Sole Trader tax burdens against Private Limited Company (Ltd) corporate structures. Find your optimal salary-to-dividend payout split.
+      </p>
+      <div class="mt-4 text-xs text-slate-400">
+        Switch to another country variant: 
+        <a href="/s-corp-tax-calculator/" class="text-[#00F5D4] hover:underline">United States (Default)</a> | 
+        <span class="text-slate-300 font-semibold">United Kingdom</span> | 
+        <a href="/s-corp-tax-calculator/canada/" class="text-[#00F5D4] hover:underline">Canada (CCPC)</a> | 
+        <a href="/s-corp-tax-calculator/australia/" class="text-[#00F5D4] hover:underline">Australia (Pty Ltd)</a>
+      </div>
+    </div>
+
+    <!-- Calculator Component -->
+    <SCorpTaxCalculator defaultCountry="UK" />
+
+    <!-- Explainer Content -->
+    <div class="border-t border-slate-800/60 mt-12 bg-gradient-to-b from-slate-950 to-slate-950/95">
+      <div class="max-w-4xl mx-auto py-16">
+        <section aria-labelledby="corp-guide-heading">
+          <div class="mb-6">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">Business Tax Strategy (UK)</span>
+            <h2 id="corp-guide-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+              Choosing Between Sole Trader and Limited Company in the UK
+            </h2>
+            <p class="mt-3 text-slate-400 text-sm leading-relaxed">
+              In the United Kingdom, self-employed individuals must decide whether to operate as a Sole Trader or incorporate as a Private Limited Company (Ltd). Operating as a Sole Trader is simple but exposes you to personal liability and high tax rates. Sole trader profits are subject to UK Income Tax (up to 45% for additional rate taxpayers) and Class 4 National Insurance Contributions (NICs) at 6% on profits between £12,570 and £50,270, and 2% above that.
+            </p>
+          </div>
+
+          <div class="space-y-6 text-sm text-slate-400 leading-relaxed">
+            <article>
+              <h3 class="text-base font-bold text-slate-100 mb-2">How Incorporating an Ltd Company Saves Tax</h3>
+              <p>
+                By incorporating as a Limited Company, you separate your personal assets from your business liabilities. From a tax perspective, an Ltd company pays Corporation Tax on its profits (currently 19% for small profits under £50,000, rising up to 25% for profits over £250,000). The director can then extract profits through a tax-efficient combination of a low salary and dividends.
+              </p>
+              <p class="mt-3">
+                Typically, directors set their PAYE salary at the National Insurance primary threshold (£12,570 per year) to avoid paying employee or employer NICs while still maintaining qualifying years for the state pension. The remaining profits are distributed as dividends, which are exempt from National Insurance and taxed at lower dividend tax rates (8.75% for basic rate, 33.75% for higher rate, and 39.35% for additional rate, after a £500 tax-free dividend allowance). Our UK tax calculator models this exact comparison, factoring in your day-job salary (PAYE) to determine your exact break-even point for incorporation.
+              </p>
+            </article>
+
+            <article>
+              <h3 class="text-base font-bold text-slate-100 mb-2">The Ltd Compliance Break-Even Threshold</h3>
+              <p>
+                As a rule of thumb, incorporating a Private Limited Company (Ltd) becomes tax-efficient once your net business profit exceeds £30,000 per year. Below this limit, the annual cost of compliance—such as accountant fees, filing confirmation statements, and payroll software—tends to consume the tax savings. The calculator above integrates these overhead factors to let you see your net financial benefit. If you are using business profit to clear personal liabilities, map your repayment timeline using our <a href="/debt-payoff-calculator/uk/" class="text-[#00F5D4] hover:underline font-semibold">debt snowball vs avalanche planner</a>. Alternatively, if you plan to accumulate wealth inside your business and borrow against company assets later, read about the <a href="/buy-borrow-die-calculator/uk/" class="text-[#00F5D4] hover:underline font-semibold">UK Lombard Loan portfolio strategy</a>.
+              </p>
+            </article>
+          </div>
+
+          <!-- FAQ Accordion -->
+          <div class="mt-12 border-t border-slate-800/80 pt-10">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-4">FAQ</span>
+            <h3 class="text-xl font-bold text-white mb-6">Frequently Asked Questions</h3>
+            <div class="faq-item border border-[#1E294B] rounded-lg overflow-hidden bg-[#141C32]">
+              <button
+                class="faq-trigger w-full flex items-center justify-between px-6 py-5 text-left group cursor-pointer"
+                aria-expanded="false"
+                onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true' ? 'false' : 'true'); this.nextElementSibling.classList.toggle('hidden');"
+              >
+                <span class="text-sm font-semibold text-white pr-4">When should I switch from a sole proprietor to an LLC or S-Corp?</span>
+                <svg class="h-5 w-5 text-slate-500 flex-shrink-0 transition-transform duration-200 group-[&[aria-expanded=true]]:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="hidden px-6 pb-6">
+                <p class="text-sm text-slate-400 leading-relaxed">
+                  In the <strong class="text-slate-300">US</strong>, the general threshold is when net profit consistently exceeds <strong class="text-slate-300">$40,000–$50,000/yr</strong> — at that level, corporate tax savings exceed compliance costs (~$1,500–$3,000). In the <strong class="text-slate-300">UK</strong>, incorporating as a Limited Company makes sense above approximately <strong class="text-slate-300">£30,000–£35,000</strong>. <strong class="text-slate-300">Canadian</strong> CCPCs become advantageous at <strong class="text-slate-300">$50,000+</strong> due to the Small Business Deduction (9% blended rate). <strong class="text-slate-300">Australian</strong> Pty Ltd structures are cost-effective above <strong class="text-slate-300">$80,000</strong> where the 25% company tax rate beats top personal marginal rates of 45% + 2% Medicare.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>

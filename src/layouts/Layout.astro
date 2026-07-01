@@ -4,12 +4,22 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  robots?: string;
+  ogImage?: string;
 }
 
 const { 
   title = "TaxDebtWealthSuite — Multi-Tool Wealth & Debt Suite", 
-  description = "Analyze wealth optimization (Buy, Borrow, Die), calculate side-hustle corporate tax benefits, and schedule debt snowballs." 
+  description = "Analyze wealth optimization (Buy, Borrow, Die), calculate side-hustle corporate tax benefits, and schedule debt snowballs.",
+  robots = "index, follow",
+  ogImage = "https://taxdebtwealthsuite.com/images/og-home.png"
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, "https://taxdebtwealthsuite.com").toString();
+
+// Determine if we are on one of the calculator tool pages
+const path = Astro.url.pathname.replace(/\/$/, "");
+const isCalculatorPage = ["/buy-borrow-die-calculator", "/s-corp-tax-calculator", "/debt-payoff-calculator"].includes(path);
 ---
 
 <!DOCTYPE html>
@@ -32,82 +42,484 @@ const {
     
     <!-- SEO Meta Tags -->
     <title>{title}</title>
-    <link rel="canonical" href="https://taxdebtwealthsuite.com/" />
+    <link rel="canonical" href={canonicalURL} />
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <slot name="head" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- JSON-LD Structured Data: SoftwareApplication + FAQPage -->
+    <!-- JSON-LD Structured Data: Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "SoftwareApplication",
-          "name": "TaxDebtWealthSuite",
-          "applicationCategory": "FinanceApplication",
-          "operatingSystem": "Web Browser",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "description": "Free interactive financial calculators for the Buy Borrow Die portfolio tax strategy, side-hustle corporate structure optimization (US, UK, CA, AU), and debt snowball vs avalanche payoff planning.",
-          "url": "https://taxdebtwealthsuite.com/",
-          "featureList": [
-            "Buy Borrow Die SBLOC tax calculator",
-            "Side-hustle sole proprietor vs LLC S-Corp tax comparison",
-            "Corporate tax optimizer for UK Ltd, Canadian CCPC, Australian Pty Ltd",
-            "Debt snowball vs avalanche payoff simulator",
-            "Real-time capital gains tax drag calculator",
-            "LTV margin call risk profiler"
-          ],
-          "screenshot": "https://taxdebtwealthsuite.com/og-preview.png",
-          "author": {
-            "@type": "Organization",
-            "name": "TaxDebtWealthSuite"
-          }
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What are the risks of borrowing against your stock portfolio (SBLOC)?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A Securities-Based Line of Credit (SBLOC) carries three primary risks: (1) Margin calls — if your portfolio value drops significantly, your lender can demand immediate repayment or force liquidation of assets; (2) Interest rate risk — SBLOC rates are typically variable and linked to SOFR, meaning costs rise in high-rate environments; (3) Collateral concentration — using a single-asset portfolio as collateral amplifies downside exposure. The standard maintenance LTV threshold is 70%, meaning a portfolio decline of more than 30% above your loan amount can trigger forced selling at the worst possible time."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "When should I switch from a sole proprietor to an LLC or S-Corp?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "In the US, the general rule of thumb is to consider forming an LLC with S-Corp election when your net side-hustle profit exceeds $40,000–$50,000 per year. Below that threshold, the annual cost of corporate compliance (registered agent fees, accountant costs, payroll setup — typically $1,500–$3,000/yr) outweighs the self-employment tax savings. In the UK, the break-even point for incorporating as a Limited Company is typically around £30,000–£35,000 in profit, when the combined Corporation Tax + dividend tax rate becomes lower than the Sole Trader income tax + Class 4 NI rate. In Canada, a CCPC becomes advantageous at roughly $50,000+ in active business income due to the Small Business Deduction (9% federal rate). Australian Pty Ltd structures make sense above approximately $80,000 in taxable income."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Is the debt avalanche method always better than the debt snowball?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Mathematically, yes — the Debt Avalanche method (targeting highest interest rate first) always minimizes the total interest paid over the life of your debts. However, behavioral finance research shows that many people struggle to maintain consistency without early wins. The Debt Snowball method (targeting smallest balance first) produces quicker 'debt-free' milestones for individual accounts, providing psychological reinforcement that helps people stay on track. The best method is the one you'll actually stick to. If your debts have similar interest rates, the difference in total interest paid is minimal, and the psychological boost of Snowball wins may outweigh the small mathematical advantage of Avalanche."
-              }
-            }
-          ]
-        }
-      ]
+      "@type": "Organization",
+      "name": "TaxDebtWealthSuite",
+      "url": "https://taxdebtwealthsuite.com/",
+      "logo": "https://taxdebtwealthsuite.com/favicon.svg"
     }
     </script>
   </head>
   <body class="h-full bg-[#0A0F1D] text-[#F8FAFC] font-sans antialiased selection:bg-[#00F5D4]/30 selection:text-white overflow-y-auto custom-scrollbar">
-    <slot />
-  </body>
-</html>
+    <div class="min-h-screen flex flex-col justify-between">
+      
+      <!-- Shared Header -->
+      <header class="border-b border-[#1E294B] bg-[#141C32] sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between py-4 md:h-20 gap-4">
+            
+            <!-- Logo & Navigation -->
+            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <a href="/" class="flex items-center space-x-3 hover:opacity-90 transition-opacity">
+                <div class="w-10 h-10 rounded-lg bg-[#1E294B] border border-[#00F5D4]/30 flex items-center justify-center flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <span class="text-lg sm:text-xl font-bold tracking-tight text-white font-sans block">
+                    TaxDebtWealth<span class="text-[#00F5D4]">Suite</span>
+                  </span>
+                  <span class="text-xs text-slate-400 hidden sm:block">Advanced Strategic Finance Suite</span>
+                </div>
+              </a>
+
+              <nav class="flex items-center space-x-1" aria-label="Tools Navigation">
+                <a href="/buy-borrow-die-calculator/" class={`text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all text-xs font-semibold ${path === '/buy-borrow-die-calculator' ? 'text-white bg-slate-800' : ''}`}>Buy, Borrow, Die</a>
+                <a href="/s-corp-tax-calculator/" class={`text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all text-xs font-semibold ${path === '/s-corp-tax-calculator' ? 'text-white bg-slate-800' : ''}`}>S-Corp Tax</a>
+                <a href="/debt-payoff-calculator/" class={`text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all text-xs font-semibold ${path === '/debt-payoff-calculator' ? 'text-white bg-slate-800' : ''}`}>Debt Payoff</a>
+                <a href="/blog/" class={`text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all text-xs font-semibold ${Astro.url.pathname.startsWith('/blog') ? 'text-white bg-slate-800' : ''}`}>Blog</a>
+              </nav>
+            </div>
+
+            <!-- Persistence Badge & Refresh Button (Only on calculator pages) -->
+            {isCalculatorPage && (
+              <div class="flex items-center justify-center space-x-3">
+                <button id="toggle-autosave" class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-medium border transition-all duration-200 focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900 cursor-pointer whitespace-nowrap min-w-[7.5rem]" title="Click to toggle auto-save state">
+                  <span id="autosave-dot" class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 flex-shrink-0"></span>
+                  <span id="autosave-text">Auto-Save: On</span>
+                </button>
+                <button id="reset-state" class="text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900 text-xs font-semibold flex items-center space-x-1.5" title="Reset all calculators">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.2" />
+                  </svg>
+                  <span id="reset-btn-text">Reset Suite</span>
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Slot Content -->
+      <slot />
+
+      <!-- Shared Footer -->
+      <footer class="border-t border-[#1E294B] bg-[#0A0F1D] py-10 text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <!-- Sitemap block -->
+          <div class="border-b border-slate-900 pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+              <p class="font-bold text-slate-200 mb-3 font-sans tracking-wide uppercase text-3xs text-[#00F5D4]/80">Buy, Borrow, Die Calculator</p>
+              <ul class="space-y-2 text-[#94A3B8]">
+                <li><a href="/buy-borrow-die-calculator/" class="hover:text-[#00F5D4] transition-colors">United States (Default)</a></li>
+                <li><a href="/buy-borrow-die-calculator/uk/" class="hover:text-[#00F5D4] transition-colors">United Kingdom (Lombard Loan)</a></li>
+                <li><a href="/buy-borrow-die-calculator/canada/" class="hover:text-[#00F5D4] transition-colors">Canada (Margin Loan)</a></li>
+                <li><a href="/buy-borrow-die-calculator/australia/" class="hover:text-[#00F5D4] transition-colors">Australia (Margin Lending)</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-bold text-slate-200 mb-3 font-sans tracking-wide uppercase text-3xs text-[#00F5D4]/80">S-Corp Tax Calculator</p>
+              <ul class="space-y-2 text-[#94A3B8]">
+                <li><a href="/s-corp-tax-calculator/" class="hover:text-[#00F5D4] transition-colors">United States (Default)</a></li>
+                <li><a href="/s-corp-tax-calculator/uk/" class="hover:text-[#00F5D4] transition-colors">United Kingdom (Ltd Company)</a></li>
+                <li><a href="/s-corp-tax-calculator/canada/" class="hover:text-[#00F5D4] transition-colors">Canada (CCPC)</a></li>
+                <li><a href="/s-corp-tax-calculator/australia/" class="hover:text-[#00F5D4] transition-colors">Australia (Pty Ltd)</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-bold text-slate-200 mb-3 font-sans tracking-wide uppercase text-3xs text-[#00F5D4]/80">Debt Payoff Calculator</p>
+              <ul class="space-y-2 text-[#94A3B8]">
+                <li><a href="/debt-payoff-calculator/" class="hover:text-[#00F5D4] transition-colors">United States (Default)</a></li>
+                <li><a href="/debt-payoff-calculator/uk/" class="hover:text-[#00F5D4] transition-colors">United Kingdom</a></li>
+                <li><a href="/debt-payoff-calculator/canada/" class="hover:text-[#00F5D4] transition-colors">Canada</a></li>
+                <li><a href="/debt-payoff-calculator/australia/" class="hover:text-[#00F5D4] transition-colors">Australia</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-bold text-slate-200 mb-3 font-sans tracking-wide uppercase text-3xs text-[#00F5D4]/80">Blog</p>
+              <ul class="space-y-2 text-[#94A3B8]">
+                <li><a href="/blog/s-corp-election-deadline-form-2553/" class="hover:text-[#00F5D4] transition-colors">S-Corp Election Deadline</a></li>
+                <li><a href="/blog/s-corp-reasonable-salary-irs-rules/" class="hover:text-[#00F5D4] transition-colors">Reasonable Salary for S-Corp</a></li>
+                <li><a href="/blog/llc-vs-s-corp-actual-differences/" class="hover:text-[#00F5D4] transition-colors">LLC vs S-Corp Differences</a></li>
+                <li><a href="/blog/sbloc-vs-heloc-accessing-cash/" class="hover:text-[#00F5D4] transition-colors">SBLOC vs HELOC</a></li>
+                <li><a href="/blog/is-buy-borrow-die-legal-irs/" class="hover:text-[#00F5D4] transition-colors">Is Buy Borrow Die Legal?</a></li>
+                <li><a href="/blog/what-happens-to-sbloc-when-you-die/" class="hover:text-[#00F5D4] transition-colors">SBLOC at Death</a></li>
+                <li><a href="/blog/margin-call-ltv-threshold-explained/" class="hover:text-[#00F5D4] transition-colors">Margin Call: LTV Threshold</a></li>
+                <li><a href="/blog/debt-avalanche-method-step-by-step/" class="hover:text-[#00F5D4] transition-colors">Debt Avalanche Step-by-Step</a></li>
+                <li><a href="/blog/extra-payment-speeds-up-debt-payoff/" class="hover:text-[#00F5D4] transition-colors">Extra Payment Speed-Up</a></li>
+                <li><a href="/blog/debt-snowball-vs-avalanche-personality/" class="hover:text-[#00F5D4] transition-colors">Snowball vs Avalanche: Personality</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <!-- Copyright & Disclaimer info -->
+            <div class="max-w-xl space-y-2">
+              <p class="font-semibold text-slate-300">
+                &copy; 2026 TaxDebtWealthSuite. All rights reserved.
+              </p>
+              <p class="text-slate-500 leading-relaxed">
+                Disclaimer: The calculators provided on this website are for informational and educational purposes only and do not constitute professional financial or legal advice.
+              </p>
+            </div>
+            <!-- Legal & Info links -->
+            <nav class="flex flex-wrap gap-x-6 gap-y-2 text-slate-400" aria-label="Footer Navigation">
+              <a href="/about/" class="hover:text-white transition-colors font-medium">About Us</a>
+              <a href="/contact/" class="hover:text-white transition-colors font-medium">Contact Us</a>
+              <a href="/privacy-policy/" class="hover:text-white transition-colors font-medium">Privacy Policy</a>
+              <a href="/terms-conditions/" class="hover:text-white transition-colors font-medium">Terms & Conditions</a>
+            </nav>
+          </div>
+          <div class="border-t border-slate-900 pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600">
+            <p>Calculations are estimates. All financial strategies contain risk.</p>
+            <p>Hosted on Cloudflare Pages.</p>
+          </div>
+        </div>
+      </footer>
+
+      <!-- ============================================================ -->
+      <!-- SHARE RESULTS MODAL — Global Overlay                         -->
+      <!-- ============================================================ -->
+      <div
+        id="share-modal"
+        class="fixed inset-0 z-[200] flex items-center justify-center p-4 hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="share-modal-title"
+      >
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeShareModal()" aria-hidden="true"></div>
+
+        <!-- Panel -->
+        <div class="share-modal-panel relative w-full max-w-sm bg-[#141C32] border border-[#1E294B] rounded-2xl shadow-2xl overflow-hidden">
+
+          <!-- Gradient accent bar -->
+          <div class="h-0.5 w-full bg-gradient-to-r from-transparent via-[#00F5D4]/60 to-transparent"></div>
+
+          <div class="p-6 space-y-5">
+
+            <!-- Header -->
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-[#00F5D4]/10 border border-[#00F5D4]/20 flex items-center justify-center flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#00F5D4]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 id="share-modal-title" class="text-sm font-bold text-white">Share Your Results</h3>
+                  <p class="text-3xs text-slate-400 mt-0.5">Help others discover this free financial suite.</p>
+                </div>
+              </div>
+              <button
+                onclick="closeShareModal()"
+                class="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-slate-800/80 transition-colors flex-shrink-0 mt-0.5"
+                aria-label="Close share dialog"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Message Preview -->
+            <div class="bg-[#0A0F1D] border border-[#1E294B] rounded-xl p-3.5">
+              <p class="text-3xs font-bold uppercase tracking-wider text-[#00F5D4]/50 mb-2">Your Message</p>
+              <p id="share-preview-text" class="text-xs text-slate-300 leading-relaxed"></p>
+            </div>
+
+            <!-- Platform Buttons -->
+            <div class="grid grid-cols-3 gap-2.5">
+
+              <!-- X / Twitter -->
+              <a
+                id="share-twitter"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex flex-col items-center gap-2 p-3 rounded-xl bg-[#0A0F1D] hover:bg-slate-800 border border-[#1E294B] hover:border-slate-600 transition-all duration-200"
+                aria-label="Share on X / Twitter"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                <span class="text-3xs font-semibold text-slate-500 group-hover:text-slate-300 transition-colors duration-200">X / Twitter</span>
+              </a>
+
+              <!-- LinkedIn -->
+              <a
+                id="share-linkedin"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex flex-col items-center gap-2 p-3 rounded-xl bg-[#0A0F1D] hover:bg-[#0A66C2]/15 border border-[#1E294B] hover:border-[#0A66C2]/40 transition-all duration-200"
+                aria-label="Share on LinkedIn"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-hover:text-[#0A66C2] transition-colors duration-200" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                <span class="text-3xs font-semibold text-slate-500 group-hover:text-[#0A66C2] transition-colors duration-200">LinkedIn</span>
+              </a>
+
+              <!-- WhatsApp -->
+              <a
+                id="share-whatsapp"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex flex-col items-center gap-2 p-3 rounded-xl bg-[#0A0F1D] hover:bg-[#25D366]/10 border border-[#1E294B] hover:border-[#25D366]/30 transition-all duration-200"
+                aria-label="Share on WhatsApp"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-hover:text-[#25D366] transition-colors duration-200" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              <span class="text-3xs font-semibold text-slate-500 group-hover:text-[#25D366] transition-colors duration-200">WhatsApp</span>
+            </a>
+
+          </div>
+
+          <!-- Copy to Clipboard -->
+          <button
+            id="share-copy-btn"
+            onclick="window.copyShareText()"
+            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#1E294B] bg-[#0A0F1D] hover:border-[#00F5D4]/25 hover:bg-[#00F5D4]/5 text-slate-400 hover:text-[#00F5D4] text-xs font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#00F5D4]/30"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <span id="copy-btn-text">Copy Message</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  @reference "../styles/global.css";
+
+  /* Share modal — entrance animation */
+  @keyframes share-modal-in {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);   }
+  }
+  .share-modal-panel {
+    animation: share-modal-in 0.18s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+  }
+</style>
+
+<!-- Client-Side State Controller Script -->
+<script is:inline>
+  (function() {
+    const STORAGE_KEY = "taxdebtwealthsuite_state_v1";
+    const AUTOSAVE_KEY = "taxdebtwealthsuite_autosave_pref";
+
+    function getAutoSavePref() {
+      const raw = localStorage.getItem(AUTOSAVE_KEY);
+      return raw !== null ? raw === "true" : true;
+    }
+
+    function triggerAutosaveIndicator(status) {
+      const dot = document.getElementById("autosave-dot");
+      const text = document.getElementById("autosave-text");
+      const btn = document.getElementById("toggle-autosave");
+      if (!dot || !text || !btn) return;
+
+      const autoSave = getAutoSavePref();
+
+      if (!autoSave) {
+        btn.className = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-slate-800/40 text-slate-400 border-slate-700 hover:bg-slate-800/80 hover:border-slate-600 transition-all duration-200 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900";
+        dot.className = "w-1.5 h-1.5 mr-1.5 rounded-full bg-slate-500";
+        text.innerText = "Auto-Save: Off";
+      } else if (status === "saving") {
+        btn.className = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 transition-all duration-200 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900";
+        dot.className = "w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse";
+        text.innerText = "Saving...";
+      } else {
+        btn.className = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-emerald-500/5 text-emerald-400/80 border-emerald-500/10 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all duration-200 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900";
+        dot.className = "w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-500";
+        text.innerText = "Saved (Local)";
+      }
+    }
+
+    // Initialize indicator on DOM load
+    window.addEventListener("DOMContentLoaded", () => {
+      triggerAutosaveIndicator();
+
+      const toggleBtn = document.getElementById("toggle-autosave");
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+          const autoSave = !getAutoSavePref();
+          localStorage.setItem(AUTOSAVE_KEY, autoSave ? "true" : "false");
+          triggerAutosaveIndicator();
+          window.dispatchEvent(new CustomEvent("financial-hub-autosave-toggled", { detail: { autoSave } }));
+        });
+      }
+
+      // Reset button confirmation pattern
+      const resetBtn = document.getElementById("reset-state");
+      let resetPending = false;
+      let resetTimeout = null;
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          const btnText = document.getElementById("reset-btn-text");
+          if (!resetBtn || !btnText) return;
+
+          if (!resetPending) {
+            resetPending = true;
+            const originalText = btnText.innerText;
+            const originalClass = resetBtn.className;
+            btnText.innerText = "Confirm Reset?";
+            resetBtn.className = resetBtn.className.replace("text-slate-400", "text-amber-400 bg-amber-500/10 border border-amber-500/30");
+
+            resetTimeout = setTimeout(() => {
+              resetPending = false;
+              btnText.innerText = originalText;
+              resetBtn.className = originalClass;
+            }, 3000);
+            return;
+          }
+
+          resetPending = false;
+          clearTimeout(resetTimeout);
+
+          localStorage.removeItem(STORAGE_KEY);
+          window.dispatchEvent(new Event("financial-hub-reset"));
+
+          const originalText2 = "Reset Suite";
+          const originalClass2 = resetBtn.className.replace("text-amber-400 bg-amber-500/10 border border-amber-500/30", "text-slate-400");
+          btnText.innerText = "Cleared! ✓";
+          resetBtn.className = resetBtn.className.replace("text-amber-400 bg-amber-500/10 border border-amber-500/30", "text-emerald-400 bg-emerald-500/10 border-emerald-500/30");
+
+          setTimeout(() => {
+            btnText.innerText = originalText2;
+            resetBtn.className = originalClass2;
+          }, 1500);
+        });
+      }
+    });
+
+    window.addEventListener("financial-hub-saving", () => {
+      triggerAutosaveIndicator("saving");
+    });
+    window.addEventListener("financial-hub-saved", () => {
+      triggerAutosaveIndicator("saved");
+    });
+
+    // ── Global Share Logic ──
+    let _shareText = '';
+    window.buildShareText = function(tabId) {
+      const url = 'https://taxdebtwealthsuite.com/';
+      if (tabId === 'tax') {
+        const savings  = document.getElementById('tax-rec-savings')?.innerText;
+        const recTitle = document.getElementById('tax-rec-title')?.innerText || '';
+        if (savings && savings !== '—' && !recTitle.toLowerCase().includes('enter revenue')) {
+          return `Just found out I could save ${savings}/yr by optimizing my business structure! Check if you're overpaying taxes: ${url}`;
+        }
+        return `Just calculated my optimal business structure using the Side-Hustle Tax Predictor! Check if you're overpaying taxes: ${url}`;
+      }
+      if (tabId === 'debt') {
+        const avInterest = document.getElementById('debt-av-interest')?.innerText;
+        const avTime     = document.getElementById('debt-av-time')?.innerText;
+        if (avInterest && avInterest !== '$0' && avTime && avTime !== '—') {
+          return `I just mapped my debt-free timeline — ${avTime} to pay off with only ${avInterest} in total interest! Try the Debt Payoff Planner: ${url}`;
+        }
+        return `I just mapped out my debt-free timeline using the Debt Payoff Planner. Try it yourself and accelerate your freedom: ${url}`;
+      }
+      if (tabId === 'bbd') {
+        const netSaved = document.getElementById('bbd-net-saved')?.innerText;
+        if (netSaved && netSaved !== '$0') {
+          return `I'm preserving ${netSaved} in tax drag by borrowing instead of liquidating — modeled on the Buy, Borrow, Die calculator. Check your leverage safety score: ${url}`;
+        }
+        return `Just modeled my portfolio margin risk and tax drag on the Buy, Borrow, Die calculator. Check your leverage safety score here: ${url}`;
+      }
+      return `Free financial calculators for tax optimization, debt payoff, and portfolio strategy: ${url}`;
+    };
+
+    window.shareResults = function(tabId) {
+      const text = window.buildShareText(tabId);
+      _shareText = text;
+      if (navigator.share) {
+        navigator.share({
+          title: 'TaxDebtWealthSuite — Free Financial Calculators',
+          text:  text,
+          url:   'https://taxdebtwealthsuite.com/'
+        }).catch(() => {});
+        return;
+      }
+      window.openShareModal(text);
+    };
+
+    window.openShareModal = function(text) {
+      const modal = document.getElementById('share-modal');
+      if (!modal) return;
+      const enc     = encodeURIComponent(text);
+      const siteEnc = encodeURIComponent('https://taxdebtwealthsuite.com/');
+      document.getElementById('share-preview-text').innerText = text;
+      document.getElementById('share-twitter').href  = `https://twitter.com/intent/tweet?text=${enc}`;
+      document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${siteEnc}&summary=${enc}`;
+      document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${enc}`;
+      document.getElementById('copy-btn-text').innerText = 'Copy Message';
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeShareModal = function() {
+      const modal = document.getElementById('share-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+
+    window.copyShareText = function() {
+      if (!_shareText) return;
+      const btn  = document.getElementById('copy-btn-text');
+      const done = () => {
+        if (btn) {
+          btn.innerText = 'Copied! ✓';
+          setTimeout(() => { btn.innerText = 'Copy Message'; }, 2500);
+        }
+      };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(_shareText).then(done).catch(() => {});
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = _shareText;
+        Object.assign(ta.style, { position: 'fixed', opacity: '0', top: '0', left: '0' });
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    };
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') window.closeShareModal();
+    });
+  })();
+</script>

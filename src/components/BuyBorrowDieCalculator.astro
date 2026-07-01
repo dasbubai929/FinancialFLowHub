@@ -1,0 +1,481 @@
+---
+interface Props {
+  defaultCurrency?: string;
+}
+
+const { defaultCurrency = "USD" } = Astro.props;
+---
+
+<section id="panel-bbd" class="space-y-6" data-default-currency={defaultCurrency}>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+    
+    <!-- Parameters Card (Left Column) -->
+    <div class="space-y-6">
+      <div class="glass-panel p-6 rounded-lg space-y-6">
+        <div>
+          <h3 class="text-lg font-bold text-white tracking-wide">Strategy Parameters</h3>
+          <p class="text-xs text-slate-400 mt-1">Configure your portfolio structure and borrowing parameters.</p>
+        </div>
+
+        <!-- Inputs -->
+        <div class="space-y-4">
+          <!-- Currency Selector -->
+          <div>
+            <label for="bbd-currency" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Currency</label>
+            <select id="bbd-currency" class="focus-ring block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white font-medium text-sm h-12 cursor-pointer">
+              <option value="USD">USD ($)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="CAD">CAD (C$)</option>
+              <option value="AUD">AUD (A$)</option>
+            </select>
+          </div>
+
+          <!-- Total Portfolio Value -->
+          <div>
+            <label for="bbd-portfolio" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Total Portfolio Value</label>
+            <div class="relative rounded-lg shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-medium bbd-currency-symbol">$</div>
+              <input type="number" id="bbd-portfolio" class="focus-ring block w-full pl-8 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white font-medium text-sm h-12" min="0" step="1000" placeholder="0" />
+            </div>
+          </div>
+
+          <!-- Asset Cost Basis -->
+          <div>
+            <label for="bbd-basis" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Asset Cost Basis</label>
+            <div class="relative rounded-lg shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-medium bbd-currency-symbol">$</div>
+              <input type="number" id="bbd-basis" class="focus-ring block w-full pl-8 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white font-medium text-sm h-12" min="0" step="1000" placeholder="0" />
+            </div>
+            <p class="text-3xs text-slate-500 mt-1">Used to calculate unrealized capital gains for tax drag comparison.</p>
+          </div>
+
+          <!-- Capital Gains Tax Rate -->
+          <div>
+            <label for="bbd-tax-rate" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Capital Gains Tax Rate (%)</label>
+            <div class="relative rounded-lg shadow-sm">
+              <input type="number" id="bbd-tax-rate" class="focus-ring block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white font-medium text-sm h-12" min="0" max="100" step="0.1" placeholder="0" />
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400 font-medium">%</div>
+            </div>
+            
+            <!-- Country Presets -->
+            <div class="flex flex-wrap gap-2 mt-2" aria-label="Country Tax Presets">
+              <button type="button" class="tax-preset-btn px-2.5 py-1 text-xs rounded bg-[#1E294B] hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] text-[#94A3B8] font-semibold transition cursor-pointer border border-[#1E294B] hover:border-[#00F5D4]/30" data-rate="20">US Preset (20%)</button>
+              <button type="button" class="tax-preset-btn px-2.5 py-1 text-xs rounded bg-[#1E294B] hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] text-[#94A3B8] font-semibold transition cursor-pointer border border-[#1E294B] hover:border-[#00F5D4]/30" data-rate="20">UK Preset (20%)</button>
+              <button type="button" class="tax-preset-btn px-2.5 py-1 text-xs rounded bg-[#1E294B] hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] text-[#94A3B8] font-semibold transition cursor-pointer border border-[#1E294B] hover:border-[#00F5D4]/30" data-rate="26.5">CA Preset (26.5%)</button>
+              <button type="button" class="tax-preset-btn px-2.5 py-1 text-xs rounded bg-[#1E294B] hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] text-[#94A3B8] font-semibold transition cursor-pointer border border-[#1E294B] hover:border-[#00F5D4]/30" data-rate="22.5">AU Preset (22.5%)</button>
+            </div>
+          </div>
+
+          <!-- Desired Cash to Borrow -->
+          <div>
+            <label for="bbd-borrow-amount" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Desired Cash to Borrow / Draw</label>
+            <div class="relative rounded-lg shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-medium bbd-currency-symbol">$</div>
+              <input type="number" id="bbd-borrow-amount" class="focus-ring block w-full pl-8 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white font-medium text-sm h-12" min="0" step="1000" placeholder="0" />
+            </div>
+          </div>
+
+          <!-- SBLOC Interest Rate -->
+          <div>
+            <label for="bbd-interest-rate" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">SBLOC / Margin Interest Rate (%)</label>
+            <div class="relative rounded-lg shadow-sm">
+              <input type="number" id="bbd-interest-rate" class="focus-ring block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white font-medium text-sm h-12" min="0" max="100" step="0.1" placeholder="0" />
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400 font-medium">%</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+      <!-- Explainer -->
+      <div class="bg-gradient-to-br from-slate-900 to-indigo-950/40 p-5 rounded-2xl border border-slate-850 space-y-3">
+        <h4 class="text-xs font-bold tracking-wider text-brand-300 uppercase">Buy, Borrow, Die Mechanics</h4>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Rather than selling appreciated assets and triggering immediate capital gains taxes (the "Sell Asset" route), high-net-worth investors borrow against their portfolios using a Security-Backed Line of Credit (SBLOC). This keeps the asset compounding unchecked. Upon death, the assets receive a stepped-up basis, erasing capital gains taxes for heirs, who then repay the loan with tax-free funds.
+        </p>
+      </div>
+    </div>
+
+    <!-- Real-Time Outputs (Right Column) -->
+    <div class="space-y-6">
+      
+      <!-- Comparison Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <!-- Sell Route -->
+        <div class="glass-panel p-6 rounded-lg">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-2xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase tracking-widest">Sell Asset Route</span>
+          <p class="text-xs text-slate-400 mt-2.5 font-medium uppercase tracking-wider">Immediate Tax Paid (Drag)</p>
+          <p id="bbd-sell-tax" class="focal-metric text-[#EF4444] mt-1">$0</p>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between text-xs text-slate-400">
+            <span>Net Remaining Portfolio:</span>
+            <span id="bbd-sell-net" class="font-bold text-white">$0</span>
+          </div>
+        </div>
+
+        <!-- Borrow Route -->
+        <div class="glass-panel p-6 rounded-lg">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-2xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 uppercase tracking-widest">Borrow (SBLOC) Route</span>
+          <p class="text-xs text-slate-400 mt-2.5 font-medium uppercase tracking-wider">Annual Interest Cost</p>
+          <p id="bbd-borrow-interest" class="focal-metric text-[#F8FAFC] mt-1">$0</p>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between text-xs text-slate-400">
+            <span>Current Loan-to-Value (LTV):</span>
+            <span id="bbd-borrow-ltv" class="font-bold text-white">0%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Net Savings Banner -->
+      <div id="bbd-savings-banner" class="p-5 rounded-lg border transition-all duration-300 flex items-center justify-between bg-[#141C32] border-[#1E294B]">
+        <div class="flex items-center space-x-3">
+          <div id="bbd-savings-icon" class="p-2.5 rounded-xl bg-slate-800 text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white">1-Year Strategy Advantage</h4>
+            <p class="text-xs text-slate-400">Net wealth saved by borrowing instead of liquidating assets.</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="text-3xs uppercase font-bold text-slate-400 tracking-wider">Net Wealth Saved</p>
+          <p id="bbd-net-saved" class="focal-metric text-[#94A3B8]">$0</p>
+        </div>
+      </div>
+
+      <!-- Share Results — BBD -->
+      <div class="flex justify-end">
+        <button
+          onclick="shareResults('bbd')"
+          class="group flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#00F5D4]/20 bg-[#00F5D4]/5 hover:bg-[#00F5D4]/10 hover:border-[#00F5D4]/40 text-[#94A3B8] hover:text-[#00F5D4] text-xs font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#00F5D4]/30"
+          aria-label="Share your Buy, Borrow, Die results"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+          <span>Share Results</span>
+        </button>
+      </div>
+
+      <!-- Risk Indicator & Price Drop Warning Meter -->
+      <div class="glass-panel p-6 rounded-lg space-y-6">
+        <div class="flex items-center justify-between">
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider">Margin Call Risk Profiler</h4>
+          <span id="bbd-risk-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 uppercase">No Loan</span>
+        </div>
+
+        <!-- Warning Alert box -->
+        <div id="bbd-risk-alert" class="p-4 rounded-xl text-xs leading-relaxed transition-all duration-300 bg-slate-900/50 border border-slate-800 text-slate-300">
+          Enter portfolio and loan parameters to analyze liquidation risk and margin call buffers.
+        </div>
+
+        <!-- Risk Zones Progress Bar -->
+        <div class="space-y-2">
+          <div class="flex justify-between text-xs text-slate-400">
+            <span>Current Loan LTV</span>
+            <span id="bbd-risk-ltv-label" class="font-bold text-white">0%</span>
+          </div>
+          <div class="relative w-full h-4 bg-slate-900 rounded-full overflow-hidden border border-slate-800 flex">
+            <!-- Track markers (LTV 30%, 50%) -->
+            <div class="h-full bg-emerald-500/25 border-r border-emerald-500/10" style="width: 30%"></div>
+            <div class="h-full bg-amber-500/25 border-r border-amber-500/10" style="width: 20%"></div>
+            <div class="h-full bg-rose-500/25" style="width: 50%"></div>
+            
+            <!-- Current LTV Pointer Overlay -->
+            <div id="bbd-risk-pointer" class="absolute top-0 bottom-0 w-1.5 bg-white shadow-lg transition-all duration-500" style="left: 0%; transform: translateX(-50%);"></div>
+          </div>
+          
+          <!-- Zone Labels -->
+          <div class="flex justify-between text-4xs uppercase tracking-wider text-slate-500 font-bold px-1">
+            <span>Low Risk (0-30%)</span>
+            <span>Moderate (30-50%)</span>
+            <span>High Risk (50%+)</span>
+          </div>
+        </div>
+
+        <!-- Price Drop Buffer Card -->
+        <div class="p-4 bg-slate-950/80 rounded-xl border border-slate-900 flex justify-between items-center">
+          <div>
+            <p class="text-2xs font-semibold text-slate-400 uppercase tracking-wider">Margin Call Price Drop Buffer</p>
+            <p class="text-3xs text-slate-500 mt-0.5">Asset price decline required to hit 70% LTV maintenance margin limit.</p>
+          </div>
+          <p id="bbd-price-drop" class="text-lg sm:text-2xl font-black text-white mono-data">N/A</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    const STORAGE_KEY = "taxdebtwealthsuite_state_v1";
+    const AUTOSAVE_KEY = "taxdebtwealthsuite_autosave_pref";
+
+    const DEFAULT_STATE = {
+      activeTab: "bbd",
+      autoSave: true,
+      bbd: {
+        portfolio: 0,
+        basis: 0,
+        taxRate: 20,
+        borrowAmount: 0,
+        interestRate: 6,
+        currency: "USD"
+      }
+    };
+
+    let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.bbd) {
+            state.bbd = { ...DEFAULT_STATE.bbd, ...parsed.bbd };
+          }
+        } catch (e) {}
+      }
+
+      const container = document.getElementById("panel-bbd");
+      if (container) {
+        const defaultCurrency = container.getAttribute("data-default-currency");
+        if (defaultCurrency) {
+          state.bbd.currency = defaultCurrency;
+        }
+      }
+    }
+
+    function saveState() {
+      const autoSave = localStorage.getItem(AUTOSAVE_KEY) !== "false";
+      const raw = localStorage.getItem(STORAGE_KEY);
+      let existing = {};
+      if (raw) {
+        try { existing = JSON.parse(raw); } catch (e) {}
+      }
+      existing.bbd = state.bbd;
+      
+      if (autoSave) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+        window.dispatchEvent(new Event("financial-hub-saving"));
+        
+        setTimeout(() => {
+          window.dispatchEvent(new Event("financial-hub-saved"));
+        }, 300);
+      }
+    }
+
+    function calculateBBD() {
+      const currency = state.bbd.currency || "USD";
+      const P = parseFloat(state.bbd.portfolio) || 0;
+      const B = parseFloat(state.bbd.basis) || 0;
+      const T = (parseFloat(state.bbd.taxRate) || 0) / 100;
+      const C = parseFloat(state.bbd.borrowAmount) || 0;
+      const Ib = (parseFloat(state.bbd.interestRate) || 0) / 100;
+
+      let taxDrag = 0;
+      let netRemainingPortfolio = P;
+
+      if (P > 0 && C > 0) {
+        const gainRatio = Math.max(0, (P - B) / P);
+        const denominator = Math.max(0.01, 1 - gainRatio * T);
+        const grossSale = C / denominator;
+        taxDrag = grossSale - C;
+        netRemainingPortfolio = Math.max(0, P - grossSale);
+      }
+
+      const annualInterest = C * Ib;
+      const ltv = P > 0 ? (C / P) * 100 : 0;
+      const netSaved = taxDrag - annualInterest;
+
+      function formatWithCurrency(val) {
+        let formatted = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currency,
+          maximumFractionDigits: 0
+        }).format(val);
+        
+        if (currency === 'CAD') {
+          formatted = formatted.replace('CA$', 'C$');
+        }
+        return formatted;
+      }
+
+      document.getElementById("bbd-sell-tax").innerText = formatWithCurrency(taxDrag);
+      document.getElementById("bbd-sell-net").innerText = formatWithCurrency(netRemainingPortfolio);
+      document.getElementById("bbd-borrow-interest").innerText = formatWithCurrency(annualInterest);
+      document.getElementById("bbd-borrow-ltv").innerText = ltv.toFixed(1) + "%";
+
+      const savedEl = document.getElementById("bbd-net-saved");
+      const savedBanner = document.getElementById("bbd-savings-banner");
+      const savedIcon = document.getElementById("bbd-savings-icon");
+
+      if (C > 0 && P > 0) {
+        savedEl.innerText = formatWithCurrency(netSaved);
+        if (netSaved > 0) {
+          savedEl.className = "focal-metric text-[var(--color-safe)]";
+          savedBanner.className = "p-5 rounded-lg border transition-all duration-300 flex items-center justify-between bg-[var(--color-safe)]/10 border-[var(--color-safe)]/30";
+          savedIcon.className = "p-2.5 rounded-lg bg-[var(--color-safe)]/20 text-[var(--color-safe)]";
+        } else {
+          savedEl.className = "focal-metric text-[var(--color-risk)]";
+          savedBanner.className = "p-5 rounded-lg border transition-all duration-300 flex items-center justify-between bg-[var(--color-risk)]/10 border-[var(--color-risk)]/30";
+          savedIcon.className = "p-2.5 rounded-lg bg-[var(--color-risk)]/20 text-[var(--color-risk)]";
+        }
+      } else {
+        savedEl.innerText = formatWithCurrency(0);
+        savedEl.className = "focal-metric text-[#94A3B8]";
+        savedBanner.className = "p-5 rounded-lg border transition-all duration-300 flex items-center justify-between bg-[#141C32] border-[#1E294B]";
+        savedIcon.className = "p-2.5 rounded-lg bg-[#1E294B] text-slate-400";
+      }
+
+      const riskStatusEl = document.getElementById("bbd-risk-status");
+      const riskAlertEl = document.getElementById("bbd-risk-alert");
+      const ltvLabelEl = document.getElementById("bbd-risk-ltv-label");
+      const pointerEl = document.getElementById("bbd-risk-pointer");
+      const priceDropEl = document.getElementById("bbd-price-drop");
+
+      ltvLabelEl.innerText = ltv.toFixed(1) + "%";
+      const pointerLeft = Math.min(100, ltv);
+      pointerEl.style.left = pointerLeft + "%";
+
+      if (C <= 0 || P <= 0) {
+        riskStatusEl.innerText = "No Loan";
+        riskStatusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-[#1E294B] text-slate-400 border border-[#1E294B] uppercase";
+        riskAlertEl.innerText = "Enter portfolio and loan parameters to analyze liquidation risk and margin call buffers.";
+        riskAlertEl.className = "p-4 rounded-lg text-xs leading-relaxed transition-all duration-300 bg-[#0A0F1D] border border-[#1E294B] text-slate-300";
+        priceDropEl.innerText = "N/A";
+        priceDropEl.className = "text-lg sm:text-2xl font-black text-slate-400 mono-data";
+      } else {
+        const maintenanceLtv = 70;
+        const priceDropBuffer = Math.max(0, (1 - (ltv / maintenanceLtv)) * 100);
+        priceDropEl.innerText = priceDropBuffer.toFixed(1) + "%";
+
+        if (ltv < 30) {
+          riskStatusEl.innerText = "Low Risk";
+          riskStatusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-[var(--color-safe)]/10 text-[var(--color-safe)] border border-[var(--color-safe)]/30 uppercase";
+          riskAlertEl.innerText = `Your SBLOC strategy is in a highly secure zone (LTV is under 30%). Your portfolio value must drop by ${priceDropBuffer.toFixed(1)}% before triggering a margin call.`;
+          riskAlertEl.className = "p-4 rounded-lg text-xs leading-relaxed transition-all duration-300 bg-[var(--color-safe)]/10 border border-[var(--color-safe)]/20 text-[var(--color-safe)]";
+          priceDropEl.className = "text-lg sm:text-2xl font-black text-[var(--color-safe)] mono-data";
+        } else if (ltv <= 50) {
+          riskStatusEl.innerText = "Moderate Risk";
+          riskStatusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30 uppercase";
+          riskAlertEl.innerText = `LTV is in the moderate range (30-50%). Avoid additional leverage. A portfolio drop of ${priceDropBuffer.toFixed(1)}% will trigger a margin call.`;
+          riskAlertEl.className = "p-4 rounded-lg text-xs leading-relaxed transition-all duration-300 bg-amber-500/10 border border-amber-500/20 text-amber-300";
+          priceDropEl.className = "text-lg sm:text-2xl font-black text-amber-400 mono-data";
+        } else {
+          riskStatusEl.innerText = "High Risk";
+          riskStatusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-[var(--color-risk)]/10 text-[var(--color-risk)] border border-[var(--color-risk)]/30 uppercase";
+          if (ltv >= 70) {
+            riskAlertEl.innerText = "ALERT: Current LTV is at or above the 70% Maintenance Threshold! You are in danger of immediate liquidation. Reduce debt or add collateral.";
+            priceDropEl.innerText = "0.0%";
+          } else {
+            riskAlertEl.innerText = `WARNING: High LTV detected (>50%). Extremely vulnerable to volatility. A small drop of ${priceDropBuffer.toFixed(1)}% will trigger a margin call.`;
+          }
+          riskAlertEl.className = "p-4 rounded-lg text-xs leading-relaxed transition-all duration-300 bg-[var(--color-risk)]/10 border border-[var(--color-risk)]/20 text-[var(--color-risk)]";
+          priceDropEl.className = "text-lg sm:text-2xl font-black text-[var(--color-risk)] mono-data";
+        }
+      }
+    }
+
+    function updateCurrencySymbols(currency) {
+      const symbols = { USD: "$", GBP: "£", CAD: "C$", AUD: "A$" };
+      const symbol = symbols[currency] || "$";
+      document.querySelectorAll(".bbd-currency-symbol").forEach(el => {
+        el.innerText = symbol;
+      });
+
+      const inputs = ["bbd-portfolio", "bbd-basis", "bbd-borrow-amount"];
+      const isLongSymbol = symbol.length > 1;
+      inputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+          if (isLongSymbol) {
+            input.classList.remove("pl-8");
+            input.classList.add("pl-12");
+          } else {
+            input.classList.remove("pl-12");
+            input.classList.add("pl-8");
+          }
+        }
+      });
+    }
+
+    function syncStateToInputs() {
+      document.getElementById("bbd-currency").value = state.bbd.currency || "USD";
+      document.getElementById("bbd-portfolio").value = state.bbd.portfolio || "";
+      document.getElementById("bbd-basis").value = state.bbd.basis || "";
+      document.getElementById("bbd-tax-rate").value = state.bbd.taxRate || "";
+      document.getElementById("bbd-borrow-amount").value = state.bbd.borrowAmount || "";
+      document.getElementById("bbd-interest-rate").value = state.bbd.interestRate || "";
+      updateCurrencySymbols(state.bbd.currency || "USD");
+    }
+
+    function runCalculations() {
+      calculateBBD();
+    }
+
+    function bindListeners() {
+      const bbdInputs = [
+        { id: "bbd-portfolio", prop: "portfolio" },
+        { id: "bbd-basis", prop: "basis" },
+        { id: "bbd-tax-rate", prop: "taxRate" },
+        { id: "bbd-borrow-amount", prop: "borrowAmount" },
+        { id: "bbd-interest-rate", prop: "interestRate" }
+      ];
+      bbdInputs.forEach(({ id, prop }) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", (e) => {
+            state.bbd[prop] = parseFloat(e.target.value) || 0;
+            saveState();
+            calculateBBD();
+          });
+        }
+      });
+
+      const currencyEl = document.getElementById("bbd-currency");
+      if (currencyEl) {
+        currencyEl.addEventListener("change", (e) => {
+          const currency = e.target.value;
+          state.bbd.currency = currency;
+          saveState();
+          updateCurrencySymbols(currency);
+          calculateBBD();
+        });
+      }
+
+      document.querySelectorAll(".tax-preset-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const rate = parseFloat(e.currentTarget.getAttribute("data-rate")) || 0;
+          const taxInput = document.getElementById("bbd-tax-rate");
+          if (taxInput) {
+            taxInput.value = rate;
+            state.bbd.taxRate = rate;
+            saveState();
+            calculateBBD();
+          }
+        });
+      });
+    }
+
+    // Load state
+    loadState();
+
+    // Event listeners
+    window.addEventListener("DOMContentLoaded", () => {
+      syncStateToInputs();
+      bindListeners();
+      runCalculations();
+    });
+
+    window.addEventListener("financial-hub-reset", () => {
+      state.bbd = JSON.parse(JSON.stringify(DEFAULT_STATE.bbd));
+      syncStateToInputs();
+      runCalculations();
+    });
+  })();
+</script>

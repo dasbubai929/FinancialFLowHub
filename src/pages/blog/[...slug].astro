@@ -1,0 +1,114 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const toolMeta: Record<string, { label: string; href: string; color: string; ogImage: string }> = {
+  "buy-borrow-die-calculator": {
+    label: "Buy, Borrow, Die Calculator",
+    href: "/buy-borrow-die-calculator/",
+    color: "text-[#00F5D4]",
+    ogImage: "https://taxdebtwealthsuite.com/images/og-buy-borrow-die.png",
+  },
+  "s-corp-tax-calculator": {
+    label: "S-Corp Tax Calculator",
+    href: "/s-corp-tax-calculator/",
+    color: "text-[#7B61FF]",
+    ogImage: "https://taxdebtwealthsuite.com/images/og-s-corp-tax.png",
+  },
+  "debt-payoff-calculator": {
+    label: "Debt Payoff Calculator",
+    href: "/debt-payoff-calculator/",
+    color: "text-[#FF6B6B]",
+    ogImage: "https://taxdebtwealthsuite.com/images/og-debt-payoff.png",
+  },
+};
+
+const tool = toolMeta[post.data.relatedTool];
+const ogImage = post.data.ogImage ?? tool.ogImage;
+---
+
+<Layout
+  title={`${post.data.title} | TaxDebtWealthSuite`}
+  description={post.data.description}
+  ogImage={ogImage}
+>
+  <article class="max-w-3xl mx-auto px-4 py-14 sm:py-20">
+
+    <!-- Breadcrumb -->
+    <nav class="mb-8 flex items-center gap-2 text-xs text-slate-500" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-slate-300 transition-colors">Home</a>
+      <span>›</span>
+      <a href="/blog/" class="hover:text-slate-300 transition-colors">Blog</a>
+      <span>›</span>
+      <span class="text-slate-400 truncate max-w-[200px]">{post.data.title}</span>
+    </nav>
+
+    <!-- Tool badge -->
+    <a
+      href={tool.href}
+      class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border mb-6 ${tool.color} bg-current/10 border-current/20 hover:opacity-80 transition-opacity`}
+      style="background-color: color-mix(in srgb, currentColor 8%, transparent); border-color: color-mix(in srgb, currentColor 20%, transparent);"
+    >
+      {tool.label}
+    </a>
+
+    <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight mb-4">
+      {post.data.title}
+    </h1>
+
+    <p class="text-base text-slate-400 leading-relaxed mb-8">
+      {post.data.description}
+    </p>
+
+    <!-- Meta row -->
+    <div class="flex flex-wrap items-center gap-4 text-xs text-slate-600 border-t border-b border-white/5 py-3 mb-10">
+      {post.data.author && <span>By {post.data.author}</span>}
+      <time datetime={post.data.pubDate.toISOString()}>
+        Published: {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+      </time>
+      {post.data.updatedDate && (
+        <time datetime={post.data.updatedDate.toISOString()}>
+          Updated: {post.data.updatedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        </time>
+      )}
+      {post.data.country && <span>Region: {post.data.country}</span>}
+    </div>
+
+    <!-- Article body -->
+    <div class="prose prose-invert prose-slate max-w-none prose-headings:font-black prose-a:text-[#00F5D4] prose-a:no-underline hover:prose-a:underline">
+      <Content />
+    </div>
+
+    <!-- CTA to related calculator -->
+    <div class="mt-14 rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+      <p class="text-sm text-slate-400 mb-4">Run the numbers yourself — free, no sign-up required.</p>
+      <a
+        href={tool.href}
+        class={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-105 ${tool.color}`}
+        style="background-color: color-mix(in srgb, currentColor 12%, transparent); border: 1px solid color-mix(in srgb, currentColor 25%, transparent);"
+      >
+        Try the {tool.label} →
+      </a>
+    </div>
+
+    <!-- Back to blog -->
+    <div class="mt-8 text-center">
+      <a href="/blog/" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">← All Articles</a>
+    </div>
+  </article>
+</Layout>
